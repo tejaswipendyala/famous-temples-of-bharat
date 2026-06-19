@@ -1,0 +1,28 @@
+{
+  "overview": "Famous Temples of Bharat is a comprehensive web application for discovering and exploring temples across India. Users can search for temples by name, deity, state, city, or tradition, and access detailed information including history, darshan timings, poojas, donations, festival calendars, and visitor reviews. Features include browse-by-state grid, temple of the day spotlight, Stripe donation payments, map routing to temples, user and admin dashboards, bookmarking, and FAQs.",
+  "features": [
+    "165 temples across all 28 Indian states and 8 union territories",
+    "Browse-by-state grid on homepage for quick discovery",
+    "Temple of the Day daily spotlight feature",
+    "Stripe donation payments on temple detail pages",
+    "Fuzzy search by name, deity, state, city, or tradition",
+    "Detailed temple pages with history, timings, poojas, festivals, nearby amenities, and map routing",
+    "User and admin dashboards with bookmarking and visit history",
+    "Reviews and FAQs for every temple",
+    "Internet Identity authentication"
+  ],
+  "category": "travel-culture",
+  "tags": [
+    "temples",
+    "india",
+    "travel",
+    "culture",
+    "religion",
+    "hinduism",
+    "pilgrimage",
+    "map",
+    "donations",
+    "stripe"
+  ],
+  "last_updated": "2026-04-21T16:22:50.693Z"
+}

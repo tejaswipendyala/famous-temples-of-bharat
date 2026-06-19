@@ -1,0 +1,149 @@
+// Version: 1.0.0
+type ContactInfo__41571410 = {email : ?Text; phone : ?Text; website : ?Text};
+type DarshanTiming__671158463 =
+  {
+    breakEnd : ?Text;
+    breakStart : ?Text;
+    closeTime : Text;
+    openTime : Text;
+    timingLabel : Text
+  };
+type Data__791452850<K, V> =
+  {var count : Nat__490723111; kvs : [var ?(K, V)]};
+type DonationId__652423526 = Nat;
+type DonationOption__574601706 =
+  {amount : Nat; description : Text; donationType : Text};
+type DonationRecord__243483731 =
+  {
+    amount : Nat;
+    createdAt : Timestamp__301639476;
+    currency : Text;
+    donor : UserId__158757552;
+    id : DonationId__652423526;
+    status : DonationStatus__524635030;
+    stripeSessionId : Text;
+    templeId : TempleId__452987825;
+    templeName : Text;
+    updatedAt : Timestamp__301639476
+  };
+type DonationStatus__524635030 = {#completed; #failed; #pending};
+type FaqId__519857278 = Nat;
+type Faq__188832187 =
+  {
+    answer : Text;
+    createdAt : Timestamp__301639476;
+    id : FaqId__519857278;
+    question : Text;
+    templeId : TempleId__452987825;
+    updatedAt : Timestamp__301639476
+  };
+type Festival__345105768 = {date : Text; name : Text; significance : Text};
+type Internal__8484328<K, V> =
+  {children : [var ?Node__46230540<K, V>]; data : Data__791452850<K, V>};
+type Leaf__809889148<K, V> = {data : Data__791452850<K, V>};
+type Map__158565046<K, V> = Map__297112838<K, V>;
+type Map__297112838<K, V> =
+  {var root : Node__46230540<K, V>; var size : Nat__490723111};
+type Map__605269027<K, V> = Map__158565046<K, V>;
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+type Node__46230540<K, V> =
+  {#internal : Internal__8484328<K, V>; #leaf : Leaf__809889148<K, V>};
+type Pooja__347271328 =
+  {
+    description : Text;
+    isIncluded : Bool;
+    name : Text;
+    price : ?Nat;
+    time : Text
+  };
+type ReviewId__496285678 = Nat;
+type Review__1059295586 =
+  {
+    comment : Text;
+    createdAt : Timestamp__301639476;
+    id : ReviewId__496285678;
+    rating : Nat;
+    templeId : TempleId__452987825;
+    userId : UserId__158757552
+  };
+type SpecialDarshan__442303973 =
+  {availableDays : [Text]; description : Text; name : Text; price : Nat};
+type TempleId__452987825 = Nat;
+type TempleId__648726854 = TempleId__452987825;
+type Temple__856634829 =
+  {
+    address : Text;
+    architectureStyle : Text;
+    averageVisitDuration : Nat;
+    city : Text;
+    contactInfo : ContactInfo__41571410;
+    createdAt : Timestamp__301639476;
+    darshanTimings : [DarshanTiming__671158463];
+    deity : Text;
+    description : Text;
+    district : Text;
+    donationOptions : [DonationOption__574601706];
+    festivalCalendar : [Festival__345105768];
+    history : Text;
+    id : TempleId__648726854;
+    images : [Text];
+    name : Text;
+    nonHinduRestriction : Bool;
+    poojaSchedule : [Pooja__347271328];
+    specialDarshans : [SpecialDarshan__442303973];
+    state : Text;
+    tags : [Text];
+    updatedAt : Timestamp__301639476
+  };
+type Timestamp__301639476 = Int;
+type UserId__158757552 = Principal;
+type UserProfile__1009003526 =
+  {
+    bookmarkedTemples : [TempleId__452987825];
+    createdAt : Timestamp__301639476;
+    email : Text;
+    name : Text;
+    role : UserRole__887406725;
+    visitHistory : [TempleId__452987825]
+  };
+type UserRole__1054455867 = {#admin; #guest; #user};
+type UserRole__887406725 = {#admin; #user};
+actor {
+  stable accessControlState :
+    {
+      var adminAssigned : Bool;
+      userRoles : Map__605269027<Principal, UserRole__1054455867>
+    };
+  stable donationCounter : {var next : Nat};
+  stable donations :
+    {
+      var root :
+        Node__46230540<DonationId__652423526, DonationRecord__243483731>;
+      var size : Nat__490723111
+    };
+  stable faqCounter : {var next : Nat};
+  stable faqs :
+    {
+      var root : Node__46230540<FaqId__519857278, Faq__188832187>;
+      var size : Nat__490723111
+    };
+  stable reviewCounter : {var next : Nat};
+  stable reviews :
+    {
+      var root : Node__46230540<ReviewId__496285678, Review__1059295586>;
+      var size : Nat__490723111
+    };
+  stable stripeConfig : {var allowedCountries : [Text]; var secretKey : Text};
+  stable templeCounter : {var next : Nat};
+  stable temples :
+    {
+      var root : Node__46230540<TempleId__452987825, Temple__856634829>;
+      var size : Nat__490723111
+    };
+  stable users :
+    {
+      var root : Node__46230540<UserId__158757552, UserProfile__1009003526>;
+      var size : Nat__490723111
+    }
+};

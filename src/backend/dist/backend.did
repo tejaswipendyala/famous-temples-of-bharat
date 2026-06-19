@@ -1,0 +1,285 @@
+type http_request_result = 
+ record {
+   body: blob;
+   headers: vec http_header;
+   status: nat;
+ };
+type http_header = 
+ record {
+   name: text;
+   value: text;
+ };
+type UserSummary = 
+ record {
+   createdAt: Timestamp;
+   email: text;
+   name: text;
+   "principal": UserId;
+   role: UserRole;
+ };
+type UserRole__1 = 
+ variant {
+   admin;
+   guest;
+   user;
+ };
+type UserRole = 
+ variant {
+   admin;
+   user;
+ };
+type UserProfile = 
+ record {
+   bookmarkedTemples: vec TempleId;
+   createdAt: Timestamp;
+   email: text;
+   name: text;
+   role: UserRole;
+   visitHistory: vec TempleId;
+ };
+type UserId = principal;
+type TransformationOutput = 
+ record {
+   body: blob;
+   headers: vec http_header;
+   status: nat;
+ };
+type TransformationInput = 
+ record {
+   context: blob;
+   response: http_request_result;
+ };
+type Timestamp = int;
+type TempleSummary = 
+ record {
+   address: text;
+   architectureStyle: text;
+   averageVisitDuration: nat;
+   city: text;
+   deity: text;
+   district: text;
+   id: TempleId;
+   images: vec text;
+   name: text;
+   nonHinduRestriction: bool;
+   state: text;
+   tags: vec text;
+ };
+type TempleInput = 
+ record {
+   address: text;
+   architectureStyle: text;
+   averageVisitDuration: nat;
+   city: text;
+   contactInfo: ContactInfo;
+   darshanTimings: vec DarshanTiming;
+   deity: text;
+   description: text;
+   district: text;
+   donationOptions: vec DonationOption;
+   festivalCalendar: vec Festival;
+   history: text;
+   images: vec text;
+   name: text;
+   nonHinduRestriction: bool;
+   poojaSchedule: vec Pooja;
+   specialDarshans: vec SpecialDarshan;
+   state: text;
+   tags: vec text;
+ };
+type TempleId = nat;
+type Temple = 
+ record {
+   address: text;
+   architectureStyle: text;
+   averageVisitDuration: nat;
+   city: text;
+   contactInfo: ContactInfo;
+   createdAt: Timestamp;
+   darshanTimings: vec DarshanTiming;
+   deity: text;
+   description: text;
+   district: text;
+   donationOptions: vec DonationOption;
+   festivalCalendar: vec Festival;
+   history: text;
+   id: TempleId;
+   images: vec text;
+   name: text;
+   nonHinduRestriction: bool;
+   poojaSchedule: vec Pooja;
+   specialDarshans: vec SpecialDarshan;
+   state: text;
+   tags: vec text;
+   updatedAt: Timestamp;
+ };
+type SpecialDarshan = 
+ record {
+   availableDays: vec text;
+   description: text;
+   name: text;
+   price: nat;
+ };
+type SearchParams = 
+ record {
+   cityFilter: opt text;
+   pagination: PaginationParams;
+   searchTerm: text;
+   stateFilter: opt text;
+ };
+type ReviewInput = 
+ record {
+   comment: text;
+   rating: nat;
+   templeId: TempleId;
+ };
+type ReviewId = nat;
+type Review = 
+ record {
+   comment: text;
+   createdAt: Timestamp;
+   id: ReviewId;
+   rating: nat;
+   templeId: TempleId;
+   userId: UserId;
+ };
+type Pooja = 
+ record {
+   description: text;
+   isIncluded: bool;
+   name: text;
+   price: opt nat;
+   time: text;
+ };
+type PaginationParams = 
+ record {
+   limit: nat;
+   offset: nat;
+ };
+type PaginatedResult = 
+ record {
+   items: vec TempleSummary;
+   limit: nat;
+   offset: nat;
+   total: nat;
+ };
+type Festival = 
+ record {
+   date: text;
+   name: text;
+   significance: text;
+ };
+type FaqInput = 
+ record {
+   answer: text;
+   question: text;
+   templeId: TempleId;
+ };
+type FaqId = nat;
+type Faq = 
+ record {
+   answer: text;
+   createdAt: Timestamp;
+   id: FaqId;
+   question: text;
+   templeId: TempleId;
+   updatedAt: Timestamp;
+ };
+type DonationStatus = 
+ variant {
+   completed;
+   failed;
+   pending;
+ };
+type DonationStats = 
+ record {
+   completedCount: nat;
+   pendingCount: nat;
+   templeId: TempleId;
+   templeName: text;
+   totalAmount: nat;
+   totalDonations: nat;
+ };
+type DonationRecord = 
+ record {
+   amount: nat;
+   createdAt: Timestamp;
+   currency: text;
+   donor: UserId;
+   id: DonationId;
+   status: DonationStatus;
+   stripeSessionId: text;
+   templeId: TempleId;
+   templeName: text;
+   updatedAt: Timestamp;
+ };
+type DonationOption = 
+ record {
+   amount: nat;
+   description: text;
+   donationType: text;
+ };
+type DonationId = nat;
+type DonationCheckoutResult = 
+ record {
+   checkoutUrl: text;
+   donationId: DonationId;
+   sessionId: text;
+ };
+type DarshanTiming = 
+ record {
+   breakEnd: opt text;
+   breakStart: opt text;
+   closeTime: text;
+   openTime: text;
+   timingLabel: text;
+ };
+type CreateDonationInput = 
+ record {
+   amount: nat;
+   cancelUrl: text;
+   currency: text;
+   successUrl: text;
+   templeId: TempleId;
+ };
+type ContactInfo = 
+ record {
+   email: opt text;
+   phone: opt text;
+   website: opt text;
+ };
+service : {
+  _initializeAccessControl: () -> ();
+  addFAQ: (input: FaqInput) -> (Faq);
+  addReview: (input: ReviewInput) -> (Review);
+  addTemple: (input: TempleInput) -> (Temple);
+  assignCallerUserRole: (user: principal, role: UserRole__1) -> ();
+  bookmarkTemple: (templeId: TempleId) -> (bool);
+  createCheckoutSession: (input: CreateDonationInput) ->
+   (DonationCheckoutResult);
+  deleteFAQ: (id: FaqId) -> (bool);
+  deleteTemple: (id: TempleId) -> (bool);
+  getAllDonationStats: () -> (vec DonationStats) query;
+  getAllTemples: () -> (vec Temple) query;
+  getCallerUserProfile: () -> (opt UserProfile) query;
+  getCallerUserRole: () -> (UserRole__1) query;
+  getDonationStats: (templeId: TempleId) -> (DonationStats) query;
+  getDonationsByTemple: (templeId: TempleId) -> (vec DonationRecord) query;
+  getFAQs: (templeId: TempleId) -> (vec Faq) query;
+  getReviews: (templeId: TempleId) -> (vec Review) query;
+  getStripeSessionStatus: (sessionId: text) -> (bool);
+  getTemple: (id: TempleId) -> (opt Temple) query;
+  getUserProfile: (user: UserId) -> (opt UserProfile) query;
+  getUsers: () -> (vec UserSummary) query;
+  isAdmin: () -> (bool) query;
+  isCallerAdmin: () -> (bool) query;
+  isStripeConfigured: () -> (bool) query;
+  removeBookmark: (templeId: TempleId) -> (bool);
+  saveCallerUserProfile: (profile: UserProfile) -> ();
+  searchTemples: (params: SearchParams) -> (PaginatedResult) query;
+  setStripeConfiguration: (secretKey: text, allowedCountries: vec text) -> ();
+  setUserRole: (user: UserId, role: UserRole) -> (bool);
+  transform: (input: TransformationInput) -> (TransformationOutput) query;
+  updateFAQ: (id: FaqId, input: FaqInput) -> (opt Faq);
+  updateTemple: (id: TempleId, input: TempleInput) -> (opt Temple);
+}
